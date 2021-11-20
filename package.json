@@ -1,0 +1,38 @@
+{
+  "name": "embit",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit -p tsconfig.vue.json && vite build",
+    "serve": "vite preview",
+    "functions:lint": "eslint --config functions/.eslintrc.js --ext .js,.ts ./functions",
+    "functions:build": "tsc -p ./functions/tsconfig.cf.json",
+    "functions:serve": "npm run function:build && firebase emulators:start --only functions",
+    "functions:shell": "npm run functions:build && firebase functions:shell",
+    "functions:start": "npm run functions:shell",
+    "functions:deploy": "firebase deploy --only functions",
+    "functions:logs": "firebase functions:log"
+  },
+  "main": "./lib/index.js",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "firebase-admin": "^9.8.0",
+    "firebase-functions": "^3.14.1",
+    "vue": "^3.2.6"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.9.1",
+    "@typescript-eslint/parser": "^3.8.0",
+    "@vitejs/plugin-vue": "^1.6.0",
+    "@vue/compiler-sfc": "^3.2.6",
+    "eslint": "^7.6.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.0",
+    "firebase-functions-test": "^0.2.0",
+    "prettier": "^2.4.1",
+    "typescript": "^4.3.2",
+    "vite": "^2.5.2",
+    "vue-tsc": "^0.2.2"
+  }
+}
