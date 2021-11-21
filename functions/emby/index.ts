@@ -4,7 +4,11 @@ import { AuthenticationAuthenticationResult } from "./openapigenerated/models/au
 import { lowerCaseKeys } from "../utils";
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
-import { UserDto } from "./openapigenerated/models";
+import {
+  CreateUserByName,
+  UpdateUserPassword,
+  UserDto,
+} from "./openapigenerated/models";
 
 const params = {
   "X-Emby-Client": "embit",
@@ -54,10 +58,57 @@ export async function authenticateUser(username: string, pw: string) {
   return lowerCaseKeys(user.data);
 }
 
+export async function getUser(username: string): Promise<UserDto> {
+  const embyConf = await initEmby();
+  const userService = new UserServiceApi(embyConf);
+  const users = lowerCaseKeys((await userService.getUsersQuery()).data);
+  const user = users.items.filter((user: UserDto) => user.name === username);
+  return user[0];
+}
+
 export async function usernameExists(username: string) {
   const embyConf = await initEmby();
   const userService = new UserServiceApi(embyConf);
   const users = lowerCaseKeys((await userService.getUsersQuery()).data);
   const user = users.items.filter((user: UserDto) => user.name === username);
   return user.length > 0;
+}
+
+export async function createUser(username: string) {
+  const embyConf = await initEmby();
+  const userService = new UserServiceApi(embyConf);
+  const user: CreateUserByName = {
+    name: username,
+  };
+
+  return userService.postUsersNew(user);
+}
+
+export async function resetPassword(username: string) {
+  const embyConf = await initEmby();
+  const userService = new UserServiceApi(embyConf);
+  const user = await getUser(username);
+  const update: UpdateUserPassword = {
+    resetPassword: true,
+  };
+  if (user?.id) {
+    userService.postUsersByIdPassword(update, user.id);
+  }
+}
+
+export async function updatePassword(username: string, newPw: string) {
+  const embyConf = await initEmby();
+  const userService = new UserServiceApi(embyConf);
+  const user = await getUser(username);
+  const update: UpdateUserPassword = {
+    newPw,
+  };
+  if (user?.id) {
+    userService.postUsersByIdPassword(update, user.id);
+  }
+}
+
+export async function changePassword(username: string, newPw: string) {
+  await resetPassword(username);
+  await updatePassword(username, newPw);
 }

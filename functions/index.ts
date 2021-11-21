@@ -3,6 +3,14 @@ import * as admin from "firebase-admin";
 
 import { setupEmby, authenticateUser, usernameExists } from "./emby";
 import { AuthenticationAuthenticationResult } from "./emby/openapigenerated/models";
+import {
+  setupEmby,
+  authenticateUser,
+  usernameExists,
+  updatePassword,
+  createUser,
+} from "./emby";
+import { checkInvite } from "./invite";
 
 admin.initializeApp();
 exports.claims = require("./sync");
@@ -61,6 +69,7 @@ async function checkArgs(args: any): Promise<void> {
       "invalid-argument",
       "Missing invite code"
     );
+<<<<<<< HEAD
   }
 }
 
@@ -92,11 +101,47 @@ async function registerUser(
   }
 }
 
+async function registerFirstUser(
+  username: string,
+  email: string,
+  password: string
+): Promise<void> {
+  await setupEmby(username, password);
+  const authResult = await authenticateUser(username, password);
+  if (!authResult?.user?.name) {
+    throw new functions.https.HttpsError(
+      "internal",
+      "please contact the admin"
+    );
+  }
+  firebaseCreateUser(authResult.user.name, email, password, authResult);
+}
+
+async function registerUser(
+  username: string,
+  email: string,
+  password: string,
+  inviteCode: string
+): Promise<void> {
+  if (!(await usernameExists(username))) {
+    console.log(username, email, password, inviteCode);
+    createUser(username);
+  }
+  updatePassword(username, password);
+  const authResult = await authenticateUser(username, password);
+  firebaseCreateUser(authResult.user.name, email, password, authResult);
+}
+
 export const register = functions.https.onCall(async (data, context) => {
   await checkArgs(data);
   if (await isFirstUser()) {
     await registerFirstUser(data.name, data.email, data.password);
-  } else {
+  } else if (await checkInvite(data.inviteCode)) {
     await registerUser(data.name, data.email, data.password, data.inviteCode);
+  } else {
+    throw new functions.https.HttpsError(
+      "invalid-argument",
+      "Invalid invite code"
+    );
   }
 });
