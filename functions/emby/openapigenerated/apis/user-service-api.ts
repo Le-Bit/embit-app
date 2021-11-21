@@ -11,16 +11,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+
 import globalAxios, { AxiosPromise, AxiosInstance } from "axios";
 import { Configuration } from "../configuration";
 // Some imports not used depending on template conditions
 // @ts-ignore
-import {
-  BASE_PATH,
-  RequestArgs,
-  BaseAPI,
-  RequiredError,
-} from "../base";
+import { BASE_PATH, RequestArgs, BaseAPI, RequiredError } from "../base";
 import { AuthenticateUser } from "../models";
 import { AuthenticateUserByName } from "../models";
 import { AuthenticationAuthenticationResult } from "../models";
@@ -36,6 +32,7 @@ import { UserDto } from "../models";
 import { UsersForgotPasswordResult } from "../models";
 import { UsersPinRedeemResult } from "../models";
 import { UsersUserPolicy } from "../models";
+
 /**
  * UserServiceApi - axios parameter creator
  * @export

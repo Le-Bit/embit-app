@@ -11,6 +11,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+
+import { SessionSessionInfo, UserDto } from ".";
+
 /**
  *
  * @export
@@ -22,23 +25,23 @@ export interface AuthenticationAuthenticationResult {
    * @type {UserDto}
    * @memberof AuthenticationAuthenticationResult
    */
-  user?: any;
+  user?: UserDto;
   /**
    *
    * @type {SessionSessionInfo}
    * @memberof AuthenticationAuthenticationResult
    */
-  sessionInfo?: any;
+  sessionInfo?: SessionSessionInfo;
   /**
    *
    * @type {string}
    * @memberof AuthenticationAuthenticationResult
    */
-  accessToken?: any;
+  accessToken?: string;
   /**
    *
    * @type {string}
    * @memberof AuthenticationAuthenticationResult
    */
-  serverId?: any;
+  serverId?: string;
 }

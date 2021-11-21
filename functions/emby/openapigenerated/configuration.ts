@@ -11,6 +11,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+
+import { AxiosRequestConfig } from "axios";
+import { UserServiceApi } from "./apis/user-service-api";
+import { AuthenticationAuthenticationResult } from "./models/authentication-authentication-result";
+import { lowerCaseKeys } from "../../utils";
+
 export interface ConfigurationParameters {
   apiKey?:
     | string
@@ -26,6 +32,7 @@ export interface ConfigurationParameters {
     | ((name?: string, scopes?: string[]) => Promise<string>);
   basePath?: string;
   baseOptions?: any;
+  axiosConfig?: AxiosRequestConfig;
 }
 
 export class Configuration {
@@ -79,6 +86,8 @@ export class Configuration {
    */
   baseOptions?: any;
 
+  axiosConfig?: AxiosRequestConfig | undefined;
+
   constructor(param: ConfigurationParameters = {}) {
     this.apiKey = param.apiKey;
     this.username = param.username;
@@ -86,5 +95,28 @@ export class Configuration {
     this.accessToken = param.accessToken;
     this.basePath = param.basePath;
     this.baseOptions = param.baseOptions;
+    this.axiosConfig = param.axiosConfig;
+  }
+
+  public async init(): Promise<AuthenticationAuthenticationResult | undefined> {
+    if (!this.username || !this.password) {
+      throw new Error("User and Password not set");
+    } else {
+      const emby = new UserServiceApi(this);
+      const AuthResult = await emby.postUsersAuthenticatebyname(
+        {
+          username: this.username,
+          pw: this.password,
+        },
+        "",
+        this.axiosConfig
+      );
+      const authResult: AuthenticationAuthenticationResult = lowerCaseKeys(
+        AuthResult.data
+      );
+      this.accessToken = authResult?.accessToken;
+      this.apiKey = this.accessToken;
+      return authResult;
+    }
   }
 }

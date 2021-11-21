@@ -11,6 +11,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+
+import { ConfigurationUserConfiguration } from ".";
+
 /**
  *
  * @export
@@ -22,31 +25,31 @@ export interface UserDto {
    * @type {string}
    * @memberof UserDto
    */
-  name?: any;
+  name?: string;
   /**
    *
    * @type {string}
    * @memberof UserDto
    */
-  serverId?: any;
+  serverId?: string;
   /**
    *
    * @type {string}
    * @memberof UserDto
    */
-  serverName?: any;
+  serverName?: string;
   /**
    *
    * @type {string}
    * @memberof UserDto
    */
-  connectUserName?: any;
+  connectUserName?: string;
   /**
    *
    * @type {Date}
    * @memberof UserDto
    */
-  dateCreated?: any | null;
+  dateCreated?: Date | null;
   /**
    *
    * @type {string}
@@ -58,55 +61,55 @@ export interface UserDto {
    * @type {string}
    * @memberof UserDto
    */
-  id?: any;
+  id?: string;
   /**
    *
    * @type {string}
    * @memberof UserDto
    */
-  primaryImageTag?: any;
+  primaryImageTag?: string;
   /**
    *
    * @type {boolean}
    * @memberof UserDto
    */
-  hasPassword?: any;
+  hasPassword?: boolean;
   /**
    *
    * @type {boolean}
    * @memberof UserDto
    */
-  hasConfiguredPassword?: any;
+  hasConfiguredPassword?: boolean;
   /**
    *
    * @type {boolean}
    * @memberof UserDto
    */
-  hasConfiguredEasyPassword?: any;
+  hasConfiguredEasyPassword?: boolean;
   /**
    *
    * @type {boolean}
    * @memberof UserDto
    */
-  enableAutoLogin?: any | null;
+  enableAutoLogin?: boolean | null;
   /**
    *
    * @type {Date}
    * @memberof UserDto
    */
-  lastLoginDate?: any | null;
+  lastLoginDate?: Date | null;
   /**
    *
    * @type {Date}
    * @memberof UserDto
    */
-  lastActivityDate?: any | null;
+  lastActivityDate?: Date | null;
   /**
    *
    * @type {ConfigurationUserConfiguration}
    * @memberof UserDto
    */
-  configuration?: any;
+  configuration?: ConfigurationUserConfiguration;
   /**
    *
    * @type {UsersUserPolicy}
@@ -118,7 +121,7 @@ export interface UserDto {
    * @type {number}
    * @memberof UserDto
    */
-  primaryImageAspectRatio?: any | null;
+  primaryImageAspectRatio?: number | null;
 }
 
 /**
